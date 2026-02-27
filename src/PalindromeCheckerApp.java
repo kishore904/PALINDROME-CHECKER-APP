@@ -21,7 +21,8 @@ public class PalindromeCheckerApp {
                     System.out.print("Do you want to check another word? (yes/no): ");
                     choice = scanner2.nextLine();
 
-                } while (choice.equalsIgnoreCase("yes"));
+                } while (choice.equalsIgnoreCase("yes"));git checkout develop
+
 
                 System.out.println("\nUC4: Loop ended. Going back to menu or exiting...\n");
             } // END OF main()
