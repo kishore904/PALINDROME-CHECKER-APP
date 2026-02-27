@@ -1,43 +1,43 @@
 public class PalindromeCheckerApp {
 
     // ----------------------------------------
-    // UC9: Recursive Palindrome Check Function
+    // UC10: Case-Insensitive & Space-Ignored Palindrome Checker
     // ----------------------------------------
-    public static boolean isPalindromeRecursive(String input, int left, int right) {
+    public static boolean isCaseInsensitivePalindrome(String input) {
 
-        // BASE CONDITION 1:
-        // If left crosses right → all characters matched
-        if (left >= right) {
-            return true;
+        // Step 1: Normalize string (remove spaces, convert to lowercase)
+        String cleaned = input.replaceAll("\\s+", "").toLowerCase();
+
+        // Step 2: Check palindrome using two-pointer method
+        int left = 0;
+        int right = cleaned.length() - 1;
+
+        while (left < right) {
+            if (cleaned.charAt(left) != cleaned.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
         }
 
-        // BASE CONDITION 2:
-        // If mismatch found → not a palindrome
-        if (input.charAt(left) != input.charAt(right)) {
-            return false;
-        }
-
-        // RECURSIVE CALL:
-        // Move inward (left++, right--)
-        return isPalindromeRecursive(input, left + 1, right - 1);
+        return true;
     }
 
     public static void main(String[] args) {
 
         java.util.Scanner scanner = new java.util.Scanner(System.in);
 
-        System.out.println("UC9: Recursive Palindrome Checker");
+        System.out.println("UC10: Case-Insensitive & Space-Ignored Palindrome Checker");
         System.out.print("Enter a string: ");
 
-        // Remove special characters & convert to lowercase
-        String raw = scanner.nextLine().replaceAll("[^A-Za-z0-9]", "").toLowerCase();
+        String raw = scanner.nextLine();
 
-        boolean result = isPalindromeRecursive(raw, 0, raw.length() - 1);
+        boolean result = isCaseInsensitivePalindrome(raw);
 
         if (result) {
-            System.out.println("Result: \"" + raw + "\" is a Palindrome (Recursive Method)");
+            System.out.println("Result: \"" + raw + "\" is a Palindrome (Case & Space Ignored)");
         } else {
-            System.out.println("Result: \"" + raw + "\" is NOT a Palindrome (Recursive Method)");
+            System.out.println("Result: \"" + raw + "\" is NOT a Palindrome (Case & Space Ignored)");
         }
     }
 }
