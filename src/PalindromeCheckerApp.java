@@ -4,25 +4,28 @@ public class PalindromeCheckerApp {
 
 
         // --------------------------------------
-// UC5: Palindrome check ignoring spaces, punctuation and symbols
+// UC6: Numeric Palindrome Check
 // --------------------------------------
 
-        java.util.Scanner scanner3 = new java.util.Scanner(System.in);
+        java.util.Scanner scanner4 = new java.util.Scanner(System.in);
 
-        System.out.print("UC5: Enter a sentence to check (special chars will be ignored): ");
-        String raw = scanner3.nextLine();
+        System.out.print("UC6: Enter a number to check: ");
+        int number = scanner4.nextInt();
+        scanner4.nextLine(); // Consume newline
 
-// Normalize input (keep only letters and numbers)
-        String cleaned = raw.replaceAll("[^A-Za-z0-9]", "").toLowerCase();
+        int temp = number;
+        int reverse = 0;
 
-        String revCleaned = new StringBuilder(cleaned).reverse().toString();
-
-        if (cleaned.equals(revCleaned)) {
-            System.out.println("Result: \"" + raw + "\" is a Palindrome (after cleaning)\n");
-        } else {
-            System.out.println("Result: \"" + raw + "\" is NOT a Palindrome (after cleaning)\n");
+        while (temp != 0) {
+            int digit = temp % 10;
+            reverse = reverse * 10 + digit;
+            temp = temp / 10;
         }
 
-    } // END OF main()
-
-} // END OF CLASS (THIS IS WHAT YOU MISSED)
+        if (reverse == number) {
+            System.out.println("Result: " + number + " is a Numeric Palindrome\n");
+        } else {
+            System.out.println("Result: " + number + " is NOT a Numeric Palindrome\n");
+        }
+    }
+}
