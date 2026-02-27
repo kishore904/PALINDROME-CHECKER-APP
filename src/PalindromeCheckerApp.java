@@ -2,97 +2,103 @@
 public class PalindromeCheckerApp {
 
     // -------------------------------------------------------
-    // UC12: Strategy Interface
+    // Algorithm 1: Two-Pointer Method
     // -------------------------------------------------------
-    interface PalindromeStrategy {
-        boolean isPalindrome(String input);
-    }
+    public static boolean twoPointerPalindrome(String input) {
 
-    // -------------------------------------------------------
-    // Strategy 1: Stack-based Palindrome Check
-    // -------------------------------------------------------
-    static class StackStrategy implements PalindromeStrategy {
+        String cleaned = input.replaceAll("[^A-Za-z0-9]", "").toLowerCase();
+        int left = 0, right = cleaned.length() - 1;
 
-        @Override
-        public boolean isPalindrome(String input) {
-
-            String cleaned = input.replaceAll("[^A-Za-z0-9]", "").toLowerCase();
-            java.util.Stack<Character> stack = new java.util.Stack<>();
-
-            // Push all characters to stack
-            for (char c : cleaned.toCharArray()) {
-                stack.push(c);
+        while (left < right) {
+            if (cleaned.charAt(left) != cleaned.charAt(right)) {
+                return false;
             }
-
-            // Build reversed string
-            StringBuilder reversed = new StringBuilder();
-            while (!stack.isEmpty()) {
-                reversed.append(stack.pop());
-            }
-
-            return cleaned.equals(reversed.toString());
+            left++;
+            right--;
         }
+        return true;
     }
 
     // -------------------------------------------------------
-    // Strategy 2: Deque-based Palindrome Check
+    // Algorithm 2: Stack-based Palindrome
     // -------------------------------------------------------
-    static class DequeStrategy implements PalindromeStrategy {
+    public static boolean stackPalindrome(String input) {
 
-        @Override
-        public boolean isPalindrome(String input) {
+        String cleaned = input.replaceAll("[^A-Za-z0-9]", "").toLowerCase();
+        java.util.Stack<Character> stack = new java.util.Stack<>();
 
-            String cleaned = input.replaceAll("[^A-Za-z0-9]", "").toLowerCase();
-            java.util.Deque<Character> deque = new java.util.ArrayDeque<>();
+        for (char c : cleaned.toCharArray()) {
+            stack.push(c);
+        }
 
-            // Add characters to deque
-            for (char c : cleaned.toCharArray()) {
-                deque.addLast(c);
-            }
+        StringBuilder reversed = new StringBuilder();
+        while (!stack.isEmpty()) {
+            reversed.append(stack.pop());
+        }
 
-            // Compare front-back until empty
-            while (deque.size() > 1) {
-                if (deque.removeFirst() != deque.removeLast()) {
-                    return false;
-                }
-            }
+        return cleaned.equals(reversed.toString());
+    }
 
+    // -------------------------------------------------------
+    // Algorithm 3: Recursive Method
+    // -------------------------------------------------------
+    public static boolean recursivePalindrome(String cleaned, int left, int right) {
+
+        if (left >= right)
             return true;
-        }
+
+        if (cleaned.charAt(left) != cleaned.charAt(right))
+            return false;
+
+        return recursivePalindrome(cleaned, left + 1, right - 1);
     }
 
     // -------------------------------------------------------
-    // main() — Choose strategy at runtime
+    // main() — Measure execution time
     // -------------------------------------------------------
     public static void main(String[] args) {
 
         java.util.Scanner scanner = new java.util.Scanner(System.in);
 
-        System.out.println("UC12: Strategy Pattern Based Palindrome Checker");
+        System.out.println("UC13: Performance Comparison of Palindrome Algorithms");
         System.out.print("Enter a string: ");
+
         String input = scanner.nextLine();
 
-        System.out.println("\nChoose Palindrome Checking Strategy:");
-        System.out.println("1. Stack Strategy");
-        System.out.println("2. Deque Strategy");
-        System.out.print("Enter choice (1 or 2): ");
-        int choice = scanner.nextInt();
-        scanner.nextLine(); // consume newline
+        // Clean once for recursion
+        String cleaned = input.replaceAll("[^A-Za-z0-9]", "").toLowerCase();
 
-        PalindromeStrategy strategy;
+        // -------------------------------------------------------
+        // Measure time for Two-Pointer
+        // -------------------------------------------------------
+        long start1 = System.nanoTime();
+        boolean r1 = twoPointerPalindrome(input);
+        long end1 = System.nanoTime();
+        long time1 = end1 - start1;
 
-        if (choice == 1) {
-            strategy = new StackStrategy();
-        } else {
-            strategy = new DequeStrategy();
-        }
+        // -------------------------------------------------------
+        // Measure time for Stack Method
+        // -------------------------------------------------------
+        long start2 = System.nanoTime();
+        boolean r2 = stackPalindrome(input);
+        long end2 = System.nanoTime();
+        long time2 = end2 - start2;
 
-        boolean result = strategy.isPalindrome(input);
+        // -------------------------------------------------------
+        // Measure time for Recursive Method
+        // -------------------------------------------------------
+        long start3 = System.nanoTime();
+        boolean r3 = recursivePalindrome(cleaned, 0, cleaned.length() - 1);
+        long end3 = System.nanoTime();
+        long time3 = end3 - start3;
 
-        if (result) {
-            System.out.println("\nResult: \"" + input + "\" is a Palindrome (Using Strategy Pattern)");
-        } else {
-            System.out.println("\nResult: \"" + input + "\" is NOT a Palindrome (Using Strategy Pattern)");
-        }
+        // -------------------------------------------------------
+        // Display Results
+        // -------------------------------------------------------
+        System.out.println("\n===== PERFORMANCE RESULTS =====");
+        System.out.println("Two-Pointer Method : " + time1 + " ns");
+        System.out.println("Stack Method       : " + time2 + " ns");
+        System.out.println("Recursive Method   : " + time3 + " ns");
+        System.out.println("================================\n");
     }
 }
