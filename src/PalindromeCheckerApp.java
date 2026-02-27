@@ -3,28 +3,26 @@ public class PalindromeCheckerApp {
     public static void main(String[] args) {
 
 
-                java.util.Scanner scanner2 = new java.util.Scanner(System.in);
-                String choice;
+        // --------------------------------------
+// UC5: Palindrome check ignoring spaces, punctuation and symbols
+// --------------------------------------
 
-                do {
-                    System.out.print("UC4: Enter a word to check: ");
-                    String text = scanner2.nextLine();
+        java.util.Scanner scanner3 = new java.util.Scanner(System.in);
 
-                    String revText = new StringBuilder(text).reverse().toString();
+        System.out.print("UC5: Enter a sentence to check (special chars will be ignored): ");
+        String raw = scanner3.nextLine();
 
-                    if (text.equalsIgnoreCase(revText)) {
-                        System.out.println("Result: " + text + " is a Palindrome\n");
-                    } else {
-                        System.out.println("Result: " + text + " is NOT a Palindrome\n");
-                    }
+// Normalize input (keep only letters and numbers)
+        String cleaned = raw.replaceAll("[^A-Za-z0-9]", "").toLowerCase();
 
-                    System.out.print("Do you want to check another word? (yes/no): ");
-                    choice = scanner2.nextLine();
+        String revCleaned = new StringBuilder(cleaned).reverse().toString();
 
-                } while (choice.equalsIgnoreCase("yes"));git checkout develop
+        if (cleaned.equals(revCleaned)) {
+            System.out.println("Result: \"" + raw + "\" is a Palindrome (after cleaning)\n");
+        } else {
+            System.out.println("Result: \"" + raw + "\" is NOT a Palindrome (after cleaning)\n");
+        }
 
+    } // END OF main()
 
-                System.out.println("\nUC4: Loop ended. Going back to menu or exiting...\n");
-            } // END OF main()
-
-        } // END OF CLASS
+} // END OF CLASS (THIS IS WHAT YOU MISSED)
