@@ -2,30 +2,21 @@ public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
-        // UC1: Welcome message
-        System.out.println("======================================");
-        System.out.println("     PALINDROME CHECKER APPLICATION    ");
-        System.out.println("======================================");
-        System.out.println("Version : 1.0");
-        System.out.println("Author  : Kishore Kumar");
-        System.out.println("--------------------------------------");
-        System.out.println("This application checks if a string is");
-        System.out.println("a palindrome. Let's begin!");
-        System.out.println("--------------------------------------\n");
-
         // --------------------------------------
-        // UC2: Hardcoded palindrome check (PUT HERE)
-        // --------------------------------------
-        String word = "MADAM";
-        String reversed = new StringBuilder(word).reverse().toString();
+// UC3: User input palindrome check
+// --------------------------------------
 
-        System.out.println("UC2: Checking hardcoded word...");
-        System.out.println("Input Word: " + word);
+        java.util.Scanner scanner = new java.util.Scanner(System.in);
 
-        if (word.equalsIgnoreCase(reversed)) {
-            System.out.println("Result: " + word + " is a Palindrome\n");
+        System.out.print("UC3: Enter a word to check: ");
+        String input = scanner.nextLine();
+
+        String rev = new StringBuilder(input).reverse().toString();
+
+        if (input.equalsIgnoreCase(rev)) {
+            System.out.println("Result: " + input + " is a Palindrome\n");
         } else {
-            System.out.println("Result: " + word + " is NOT a Palindrome\n");
+            System.out.println("Result: " + input + " is NOT a Palindrome\n");
         }
     }
 }
