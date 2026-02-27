@@ -1,50 +1,96 @@
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.Scanner;
-
 public class PalindromeCheckerApp {
 
-    public static void main(String[] args) {
+    // Node class for singly linked list
+    static class Node {
+        char data;
+        Node next;
 
-        // UC7: Deque-based optimized palindrome check
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("======================================");
-        System.out.println("     UC7: DEQUE PALINDROME CHECKER    ");
-        System.out.println("======================================\n");
-
-        System.out.print("Enter a word to check using Deque: ");
-        String input = scanner.nextLine();
-
-        // Normalize input (keep only letters and numbers)
-        String cleaned = input.replaceAll("[^A-Za-z0-9]", "").toLowerCase();
-
-        // Deque for checking palindrome
-        Deque<Character> deque = new LinkedList<>();
-
-        // Insert characters into deque
-        for (char ch : cleaned.toCharArray()) {
-            deque.addLast(ch);
+        Node(char data) {
+            this.data = data;
+            this.next = null;
         }
+    }
 
-        boolean isPalindrome = true;
+    // Convert string to linked list
+    public static Node convertToLinkedList(String input) {
+        Node head = null, tail = null;
 
-        // Compare front and rear
-        while (deque.size() > 1) {
-            char front = deque.removeFirst();
-            char rear = deque.removeLast();
+        for (char c : input.toCharArray()) {
+            Node newNode = new Node(c);
 
-            if (front != rear) {
-                isPalindrome = false;
-                break;
+            if (head == null) {
+                head = newNode;
+                tail = newNode;
+            } else {
+                tail.next = newNode;
+                tail = newNode;
             }
         }
 
-        // Output result
-        if (isPalindrome) {
-            System.out.println("\nResult: \"" + input + "\" is a Palindrome (Deque-Based)\n");
+        return head;
+    }
+
+    // Reverse a linked list (in-place)
+    public static Node reverse(Node head) {
+        Node prev = null;
+        Node current = head;
+        Node next;
+
+        while (current != null) {
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+
+        return prev; // new head
+    }
+
+    // UC8: Linked List Palindrome Checker
+    public static boolean isPalindromeUsingLinkedList(String input) {
+
+        // Step 1: Convert input string to linked list
+        Node head = convertToLinkedList(input);
+
+        // Step 2: Use fast–slow pointer to reach middle
+        Node slow = head;
+        Node fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;       // moves 1 step
+            fast = fast.next.next; // moves 2 steps
+        }
+
+        // Step 3: Reverse second half of the list
+        Node secondHalfHead = reverse(slow);
+
+        // Step 4: Compare first and second half
+        Node firstPointer = head;
+        Node secondPointer = secondHalfHead;
+
+        while (secondPointer != null) {
+            if (firstPointer.data != secondPointer.data) {
+                return false;
+            }
+            firstPointer = firstPointer.next;
+            secondPointer = secondPointer.next;
+        }
+
+        return true;
+    }
+
+    public static void main(String[] args) {
+
+        java.util.Scanner scanner = new java.util.Scanner(System.in);
+
+        System.out.println("UC8: Linked List Based Palindrome Checker");
+        System.out.print("Enter a string: ");
+        String input = scanner.nextLine().replaceAll("[^A-Za-z0-9]", "").toLowerCase();
+
+        if (isPalindromeUsingLinkedList(input)) {
+            System.out.println("Result: " + input + " is a Palindrome (Linked List Method)");
         } else {
-            System.out.println("\nResult: \"" + input + "\" is NOT a Palindrome (Deque-Based)\n");
+            System.out.println("Result: " + input + " is NOT a Palindrome (Linked List Method)");
         }
     }
 }
